@@ -1,7 +1,32 @@
 import { useEffect, useState } from "react"
+import { db } from "../../util/firebaseConfig"
+import { setDoc, doc } from "firebase/firestore"
 
 export const ContactForm = () => {
   const [closeContactForm, setCloseContactForm] = useState(false)
+
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [phone, setPhone] = useState("")
+  const [message, setMessage] = useState("")
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault()
+    const data = {
+      name,
+      email,
+      phone,
+      message,
+    }
+    // add new document to firestore
+    setDoc(doc(db, "contacts", email), data)
+
+    setName("")
+    setEmail("")
+    setPhone("")
+    setMessage("")
+    setCloseContactForm(true)
+  }
 
   useEffect(() => {
     setTimeout(() => {
@@ -33,6 +58,7 @@ export const ContactForm = () => {
                   placeholder="Name"
                   type="text"
                   id="name"
+                  onChange={(e) => setName(e.target.value)}
                 />
               </div>
 
@@ -49,6 +75,7 @@ export const ContactForm = () => {
                     placeholder="Email address"
                     type="email"
                     id="email"
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
 
@@ -64,6 +91,7 @@ export const ContactForm = () => {
                     placeholder="Phone Number"
                     type="tel"
                     id="phone"
+                    onChange={(e) => setPhone(e.target.value)}
                   />
                 </div>
               </div>
@@ -80,12 +108,14 @@ export const ContactForm = () => {
                   className="w-full rounded-lg border-gray-200 p-3 text-sm"
                   placeholder="Message"
                   id="message"
+                  onChange={(e) => setMessage(e.target.value)}
                 ></textarea>
               </div>
 
               <div className="mt-4">
                 <button
                   type="submit"
+                  onClick={handleSubmit}
                   className="inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto"
                 >
                   Send Enquiry
