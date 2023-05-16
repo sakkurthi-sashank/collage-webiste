@@ -25,7 +25,7 @@ export const ContactForm = () => {
     setEmail("")
     setPhone("")
     setMessage("")
-    setCloseContactForm(true)
+    setCloseContactForm(false)
   }
 
   useEffect(() => {
